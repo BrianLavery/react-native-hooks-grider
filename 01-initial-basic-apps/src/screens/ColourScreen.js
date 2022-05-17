@@ -5,7 +5,7 @@ const ColourScreen = () => {
     const [colours, setColours] = useState([])
     
     return (
-        <View>
+        <View style={{ marginBottom: 40 }}>
             <Button title='Add a colour' onPress={() => {
                 setColours([...colours, randomRgb()])
             }} />
