@@ -1,10 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Button, TouchableOpacity } from 'react-native';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 import { Context } from '../context/BlogContext';
 
 const IndexScreen = ({ navigation }) => {
-	const { state, deleteBlogPost } = useContext(Context);
+	const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
+
+	// Only want to call getBlogPosts one time
+	useEffect(() => {
+		getBlogPosts();
+
+		// This tells RN that anytime we return to this screen we should call getBlogPosts again
+		const listener = navigation.addListener('didFocus', () => {
+			getBlogPosts();
+		});
+
+		// Return function that is invoked once index screen stops showing totally - we do clean up
+		return () => {
+			listener.remove();
+		};
+	}, []);
 
 	return (
 		<View style={{ flex: 1 }}>

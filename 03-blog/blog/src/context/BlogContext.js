@@ -3,15 +3,8 @@ import jsonServer from '../api/jsonServer';
 
 const blogReducer = (state, action) => {
 	switch (action.type) {
-		case 'add_blogpost':
-			return [
-				...state,
-				{
-					id: Math.floor(Math.random() * 99999),
-					title: action.payload.title,
-					content: action.payload.content,
-				},
-			];
+		case 'get_blogposts':
+			return action.payload; // assume this API response is "total source of truth"
 		case 'edit_blogpost':
 			return state.map((blogPost) => {
 				return blogPost.id === action.payload.id ? action.payload : blogPost;
@@ -23,9 +16,18 @@ const blogReducer = (state, action) => {
 	}
 };
 
+const getBlogPosts = (dispatch) => {
+	return async () => {
+		const response = await jsonServer.get('/blogposts');
+
+		dispatch({ type: 'get_blogposts', payload: response.data });
+	};
+};
+
 const addBlogPost = (dispatch) => {
-	return (title, content, callback) => {
-		dispatch({ type: 'add_blogpost', payload: { title, content } });
+	return async (title, content, callback) => {
+		await jsonServer.post('/blogposts', { title, content });
+
 		if (callback) {
 			callback();
 		}
@@ -47,7 +49,9 @@ const editBlogPost = (dispatch) => {
 	};
 };
 
-// Last argument is default state
-export const { Context, Provider } = createDataContext(blogReducer, { addBlogPost, deleteBlogPost, editBlogPost }, [
-	{ id: 1, title: 'TEST POST', content: 'TEST CONTENT' },
-]);
+// Third argument is default state
+export const { Context, Provider } = createDataContext(
+	blogReducer,
+	{ addBlogPost, deleteBlogPost, editBlogPost, getBlogPosts },
+	[]
+);
