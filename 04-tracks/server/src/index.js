@@ -1,14 +1,17 @@
 require('./models/User'); // don't assign to variable as exported line should only be executed ONE TIME ONLY
+require('./models/Track');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser'); // handles incoming json in body of a request
 const authRoutes = require('./routes/authRoutes');
+const trackRoutes = require('./routes/trackRoutes');
 const requireAuth = require('./middlewares/requireAuth');
 
 const app = express();
 
 app.use(bodyParser.json()); // This puts any parsed info on req on the body object
 app.use(authRoutes);
+app.use(trackRoutes);
 
 const mongoUri =
 	'mongodb+srv://reactnativeapp:JnruHVcbKqYQP0ej@cluster0.awly3ml.mongodb.net/?retryWrites=true&w=majority';
