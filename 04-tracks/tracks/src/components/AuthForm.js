@@ -55,5 +55,3 @@ const styles = StyleSheet.create({
 });
 
 export default AuthForm;
-
-// <NavigationEvents onWillFocus={clearErrorMessage}
