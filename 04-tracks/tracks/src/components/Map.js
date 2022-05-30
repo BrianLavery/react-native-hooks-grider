@@ -1,33 +1,33 @@
-import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+import React, { useContext } from 'react';
+import { StyleSheet, ActivityIndicator } from 'react-native';
+import MapView, { Polyline, Circle } from 'react-native-maps';
+
+import { Context as LocationContext } from '../contexts/LocationContext';
 
 const Map = () => {
-	let points = [];
-	for (let i = 0; i < 20; i++) {
-		if (i % 2 === 0) {
-			points.push({
-				latitude: 13.728500803444328 + i * 0.0001,
-				longitude: 100.57101687254492 + i * 0.0001,
-			});
-		} else {
-			points.push({
-				latitude: points[i - 1].latitude + 0.0002,
-				longitude: 100.57101687254492 + i * 0.0001,
-			});
-		}
+	const {
+		state: { currentLocation },
+	} = useContext(LocationContext);
+
+	if (!currentLocation) {
+		return <ActivityIndicator size='large' style={{ marginTop: 200 }} />;
 	}
 
+	// Map properties we have initialRegion but then we keep updating using the region property start
 	return (
 		<MapView
 			style={styles.map}
 			initialRegion={{
-				latitude: 13.728500803444328,
-				longitude: 100.57101687254492,
+				...currentLocation.coords,
 				latitudeDelta: 0.01,
 				longitudeDelta: 0.01,
 			}}>
-			<Polyline coordinates={points} />
+			<Circle
+				center={currentLocation.coords}
+				radius={25}
+				strokeColor='rgba(30,60,255,1.0)'
+				fillColor='rgba(30,60,255,0.3)'
+			/>
 		</MapView>
 	);
 };
@@ -39,3 +39,23 @@ const styles = StyleSheet.create({
 });
 
 export default Map;
+
+// initialLocation = {
+//     longitude: -122.0312186,
+//     latitude: 37.33233141,
+//   };
+//   return (
+//     <MapView
+//       style={styles.map}
+//       initialRegion={{
+//         ...initialLocation,
+//         latitudeDelta: 0.01,
+//         longitudeDelta: 0.01,
+//       }}
+//     >
+
+// region={{
+// 	...currentLocation.coords,
+// 	latitudeDelta: 0.01,
+// 	longitudeDelta: 0.01,
+// }}
