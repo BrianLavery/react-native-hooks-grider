@@ -39,23 +39,3 @@ const styles = StyleSheet.create({
 });
 
 export default Map;
-
-// initialLocation = {
-//     longitude: -122.0312186,
-//     latitude: 37.33233141,
-//   };
-//   return (
-//     <MapView
-//       style={styles.map}
-//       initialRegion={{
-//         ...initialLocation,
-//         latitudeDelta: 0.01,
-//         longitudeDelta: 0.01,
-//       }}
-//     >
-
-// region={{
-// 	...currentLocation.coords,
-// 	latitudeDelta: 0.01,
-// 	longitudeDelta: 0.01,
-// }}
