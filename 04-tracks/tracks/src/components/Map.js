@@ -6,8 +6,10 @@ import { Context as LocationContext } from '../contexts/LocationContext';
 
 const Map = () => {
 	const {
-		state: { currentLocation },
+		state: { currentLocation, locations },
 	} = useContext(LocationContext);
+
+	// console.log(locations);
 
 	if (!currentLocation) {
 		return <ActivityIndicator size='large' style={{ marginTop: 200 }} />;
@@ -24,10 +26,11 @@ const Map = () => {
 			}}>
 			<Circle
 				center={currentLocation.coords}
-				radius={25}
-				strokeColor='rgba(30,60,255,1.0)'
-				fillColor='rgba(30,60,255,0.3)'
+				radius={35}
+				strokeColor='rgba(15,40,255,1.0)'
+				fillColor='rgba(15,40,255,0.3)'
 			/>
+			<Polyline coordinates={locations.map((loc) => loc.coords)} />
 		</MapView>
 	);
 };
